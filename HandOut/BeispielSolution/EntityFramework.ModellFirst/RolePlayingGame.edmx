@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SAE_RolePlayingGameModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="Klassen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="PlayerItems">
+          <Key>
+            <PropertyRef Name="playerID" />
+            <PropertyRef Name="itemID" />
+          </Key>
+          <Property Name="playerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="itemID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+          <Property Name="rasseID" Type="int" />
+          <Property Name="klasseID" Type="int" />
+          <Property Name="muenzen" Type="int" />
+          <Property Name="level" Type="int" />
+          <Property Name="energie" Type="int" />
+          <Property Name="password" Type="varchar" MaxLength="12" />
+        </EntityType>
+        <EntityType Name="PlayerWaffen">
+          <Key>
+            <PropertyRef Name="playerID" />
+            <PropertyRef Name="waffenID" />
+          </Key>
+          <Property Name="playerID" Type="int" Nullable="false" />
+          <Property Name="waffenID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Rassen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+        </EntityType>
+        <!--Während der Generierung sind Fehler aufgetreten:
+Warnung 6013: Für Tabelle/Sicht 'SAE_RolePlayingGame.dbo.ROLEPLAYINGGAME' ist kein Primärschlüssel definiert, und es konnte kein gültiger Primärschlüssel abgeleitet werden. Diese Tabelle/Sicht wurde ausgeschlossen. Wenn Sie die Entität verwenden möchten, müssen Sie das Schema überprüfen, die richtigen Schlüssel hinzufügen und die Auskommentierung aufheben.
+        <EntityType Name="ROLEPLAYINGGAME">
+          <Property Name="name" Type="varchar" MaxLength="30" />
+          <Property Name="rasse" Type="varchar" MaxLength="30" />
+          <Property Name="klasse" Type="varchar" MaxLength="30" />
+          <Property Name="muenzen" Type="int" />
+          <Property Name="level" Type="int" />
+          <Property Name="energie" Type="int" />
+        </EntityType>-->
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Waffen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" />
+          <Property Name="schaden" Type="int" />
+        </EntityType>
+        <Association Name="FK__PlayerIte__itemI__4316F928">
+          <End Role="Items" Type="Self.Items" Multiplicity="1" />
+          <End Role="PlayerItems" Type="Self.PlayerItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Items">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PlayerItems">
+              <PropertyRef Name="itemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerIte__playe__4222D4EF">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="PlayerItems" Type="Self.PlayerItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PlayerItems">
+              <PropertyRef Name="playerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Players__klasseI__3B75D760">
+          <End Role="Klassen" Type="Self.Klassen" Multiplicity="0..1" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klassen">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="klasseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Players__rasseID__3A81B327">
+          <End Role="Rassen" Type="Self.Rassen" Multiplicity="0..1" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rassen">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="rasseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerWaf__playe__49C3F6B7">
+          <End Role="Players" Type="Self.Players" Multiplicity="1" />
+          <End Role="PlayerWaffen" Type="Self.PlayerWaffen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PlayerWaffen">
+              <PropertyRef Name="playerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__PlayerWaf__waffe__4AB81AF0">
+          <End Role="Waffen" Type="Self.Waffen" Multiplicity="1" />
+          <End Role="PlayerWaffen" Type="Self.PlayerWaffen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Waffen">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PlayerWaffen">
+              <PropertyRef Name="waffenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SAE_RolePlayingGameModelStoreContainer">
+          <EntitySet Name="Items" EntityType="Self.Items" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Klassen" EntityType="Self.Klassen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerItems" EntityType="Self.PlayerItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerWaffen" EntityType="Self.PlayerWaffen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Rassen" EntityType="Self.Rassen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Waffen" EntityType="Self.Waffen" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__PlayerIte__itemI__4316F928" Association="Self.FK__PlayerIte__itemI__4316F928">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="PlayerItems" EntitySet="PlayerItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerIte__playe__4222D4EF" Association="Self.FK__PlayerIte__playe__4222D4EF">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="PlayerItems" EntitySet="PlayerItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Players__klasseI__3B75D760" Association="Self.FK__Players__klasseI__3B75D760">
+            <End Role="Klassen" EntitySet="Klassen" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Players__rasseID__3A81B327" Association="Self.FK__Players__rasseID__3A81B327">
+            <End Role="Rassen" EntitySet="Rassen" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerWaf__playe__49C3F6B7" Association="Self.FK__PlayerWaf__playe__49C3F6B7">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="PlayerWaffen" EntitySet="PlayerWaffen" />
+          </AssociationSet>
+          <AssociationSet Name="FK__PlayerWaf__waffe__4AB81AF0" Association="Self.FK__PlayerWaf__waffe__4AB81AF0">
+            <End Role="Waffen" EntitySet="Waffen" />
+            <End Role="PlayerWaffen" EntitySet="PlayerWaffen" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SAE_RolePlayingGameModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Items">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Players" Relationship="Self.PlayerItems" FromRole="Items" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="Klassen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Players" Relationship="Self.FK__Players__klasseI__3B75D760" FromRole="Klassen" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="rasseID" Type="Int32" />
+          <Property Name="klasseID" Type="Int32" />
+          <Property Name="muenzen" Type="Int32" />
+          <Property Name="level" Type="Int32" />
+          <Property Name="energie" Type="Int32" />
+          <Property Name="password" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Klassen" Relationship="Self.FK__Players__klasseI__3B75D760" FromRole="Players" ToRole="Klassen" />
+          <NavigationProperty Name="Rassen" Relationship="Self.FK__Players__rasseID__3A81B327" FromRole="Players" ToRole="Rassen" />
+          <NavigationProperty Name="Items" Relationship="Self.PlayerItems" FromRole="Players" ToRole="Items" />
+          <NavigationProperty Name="Waffen" Relationship="Self.PlayerWaffen" FromRole="Players" ToRole="Waffen" />
+        </EntityType>
+        <EntityType Name="Rassen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Players" Relationship="Self.FK__Players__rasseID__3A81B327" FromRole="Rassen" ToRole="Players" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Waffen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="schaden" Type="Int32" />
+          <NavigationProperty Name="Players" Relationship="Self.PlayerWaffen" FromRole="Waffen" ToRole="Players" />
+        </EntityType>
+        <Association Name="FK__Players__klasseI__3B75D760">
+          <End Role="Klassen" Type="Self.Klassen" Multiplicity="0..1" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Klassen">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="klasseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Players__rasseID__3A81B327">
+          <End Role="Rassen" Type="Self.Rassen" Multiplicity="0..1" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rassen">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Players">
+              <PropertyRef Name="rasseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="PlayerItems">
+          <End Role="Items" Type="Self.Items" Multiplicity="*" />
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+        </Association>
+        <Association Name="PlayerWaffen">
+          <End Role="Players" Type="Self.Players" Multiplicity="*" />
+          <End Role="Waffen" Type="Self.Waffen" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="SAE_RolePlayingGameEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Items" EntityType="Self.Items" />
+          <EntitySet Name="Klassen" EntityType="Self.Klassen" />
+          <EntitySet Name="Players" EntityType="Self.Players" />
+          <EntitySet Name="Rassen" EntityType="Self.Rassen" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Waffen" EntityType="Self.Waffen" />
+          <AssociationSet Name="FK__Players__klasseI__3B75D760" Association="Self.FK__Players__klasseI__3B75D760">
+            <End Role="Klassen" EntitySet="Klassen" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Players__rasseID__3A81B327" Association="Self.FK__Players__rasseID__3A81B327">
+            <End Role="Rassen" EntitySet="Rassen" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="PlayerItems" Association="Self.PlayerItems">
+            <End Role="Items" EntitySet="Items" />
+            <End Role="Players" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="PlayerWaffen" Association="Self.PlayerWaffen">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Waffen" EntitySet="Waffen" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SAE_RolePlayingGameModelStoreContainer" CdmEntityContainer="SAE_RolePlayingGameEntities">
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="SAE_RolePlayingGameModel.Items">
+              <MappingFragment StoreEntitySet="Items">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Klassen">
+            <EntityTypeMapping TypeName="SAE_RolePlayingGameModel.Klassen">
+              <MappingFragment StoreEntitySet="Klassen">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="SAE_RolePlayingGameModel.Players">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="rasseID" ColumnName="rasseID" />
+                <ScalarProperty Name="klasseID" ColumnName="klasseID" />
+                <ScalarProperty Name="muenzen" ColumnName="muenzen" />
+                <ScalarProperty Name="level" ColumnName="level" />
+                <ScalarProperty Name="energie" ColumnName="energie" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rassen">
+            <EntityTypeMapping TypeName="SAE_RolePlayingGameModel.Rassen">
+              <MappingFragment StoreEntitySet="Rassen">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="SAE_RolePlayingGameModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Waffen">
+            <EntityTypeMapping TypeName="SAE_RolePlayingGameModel.Waffen">
+              <MappingFragment StoreEntitySet="Waffen">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="schaden" ColumnName="schaden" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="PlayerItems" TypeName="SAE_RolePlayingGameModel.PlayerItems" StoreEntitySet="PlayerItems">
+            <EndProperty Name="Items">
+              <ScalarProperty Name="ID" ColumnName="itemID" />
+            </EndProperty>
+            <EndProperty Name="Players">
+              <ScalarProperty Name="ID" ColumnName="playerID" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="PlayerWaffen" TypeName="SAE_RolePlayingGameModel.PlayerWaffen" StoreEntitySet="PlayerWaffen">
+            <EndProperty Name="Players">
+              <ScalarProperty Name="ID" ColumnName="playerID" />
+            </EndProperty>
+            <EndProperty Name="Waffen">
+              <ScalarProperty Name="ID" ColumnName="waffenID" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Kein" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,77 @@
+USE [SAE_RolePlayingGame]
+GO
+
+CREATE TABLE Rassen(
+	ID INTEGER IDENTITY(1,1),
+	name VARCHAR(30),
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE Klassen(
+	ID INTEGER IDENTITY(1,1),
+	name VARCHAR(30),
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE Players(
+	ID INTEGER IDENTITY(1,1),
+	name VARCHAR(30),
+	rasseID INTEGER,
+	klasseID INTEGER,
+	muenzen INTEGER,
+	level INTEGER,
+	energie INTEGER,
+	PRIMARY KEY (ID),
+	FOREIGN KEY (rasseID) REFERENCES Rassen(ID),
+	FOREIGN KEY (klasseID) REFERENCES Klassen(ID)
+);
+
+
+CREATE TABLE Waffen(
+	ID INTEGER IDENTITY(1,1),
+	name VARCHAR(30),
+	schaden INTEGER,
+	PRIMARY KEY (ID)
+);
+
+
+CREATE TABLE Items(
+	ID INTEGER IDENTITY(1,1),
+	name VARCHAR(30),
+	PRIMARY KEY (ID)
+);
+
+CREATE TABLE PlayerItems(
+	playerID INTEGER IDENTITY(1,1),
+	itemID INTEGER,
+	CONSTRAINT pk_ItemsID PRIMARY KEY (playerID,itemID),
+	FOREIGN KEY (playerID) REFERENCES Players(ID),
+	FOREIGN KEY (itemID) REFERENCES Items(ID)
+);
+
+CREATE TABLE PlayerWaffen(
+	playerID INTEGER,
+	waffenID INTEGER,
+	CONSTRAINT pk_WaffenID PRIMARY KEY (playerID,waffenID),
+	FOREIGN KEY (playerID) REFERENCES Players(ID),
+	FOREIGN KEY (waffenID) REFERENCES Waffen(ID)
+);
+
+Select * from Items;
+
+
+
+
+--CREATE TABLE traenke(
+--	ID INTEGER IDENTITY(1,1),
+--	name VARCHAR(30),
+--	schaden INTEGER,
+--	PRIMARY KEY (ID)
+--);
+
+--CREATE TABLE tranktyp(
+--	ID INTEGER IDENTITY(1,1),
+--	name VARCHAR(30),
+--	schaden INTEGER,
+--	PRIMARY KEY (ID)
+--);
